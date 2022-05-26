@@ -18,7 +18,7 @@
 
 > Configurações adquiridas com sudo lshw | grep -A 100
 
-``` md
+```sh
 *-disk
     descrição: ATA Disk
     produto: HGST HTS541010A9
@@ -44,27 +44,29 @@
 - Tamanho do setor = 4096 bytes
 - Setores por trilha = 1000 (valor suposto)
 - [Quantidade de habitantes](https://techdoido.com.br/web-stories/quantas-pessoas-existem-no-mundo-em-2022) = 7.800.000.000 pessoas // 7.8 bilhões de pessoas
-  - Se cada pessoa ocupa um setor, e um setor tem 4096 bytes, temos 7.800.000.000 * 4096 = 31.948.800.000.000 bytes = 31.200.000.000 GB (Não cabe em meu HD, porém julgaremos que temos um HD de tamanho infinito)
+  - Se cada pessoa ocupa um setor, e um setor tem 4096 bytes, temos 7.800.000.000 \* 4096 = 31.948.800.000.000 bytes = 31.200.000.000 GB (Não cabe em meu HD, porém julgaremos que temos um HD de tamanho infinito)
 - Tempo médio de seek = 6ms (valor suposto)
 - Rotação = 5400RPM
+  - Atraso rotacional = 60/RPM
   - Atraso rotacional = 60/5400 = 11,1 ms
+  - Atraso rotacional médio = _atraso rotacional_/2
   - Atraso rotacional médio = 11,1/2 = 5,6 ms
 - Tempo de transferência = 11,1 / 1000 = 0,0111 ms / setor
 - Ocupação do arquivo em trilhas = 7.800.000.000 / 1000 = 7.800.000 trilhas
 
-1) sequencial / aleatório
+1. sequencial / aleatório
 
 - Salvo de forma sequencial, porém acessado aleatório
 - Acesso um setor = 6 + 5,6 + 0,0111 = 11,6111 ms para ler um setor
 - Para ler 7.8 bilhões de registros ou setores = 11,6111 \* 7.800.000.000 = 90.566.580.000 ms =~ 3 anos (90.566.580s / 31.536.000)
 
-2) sequencial / sequencial e
+2. sequencial / sequencial e
 
 - Salvo de forma sequencial, porém acesso sequencial
 - Tempo de leitura de uma trilha: 6 + 5,6 + 11,1 = 22,7ms
-- Tempo de leitura de 7.800.000 trilhas: 22,7 * 7.800.000 = 177.060.000 ms =~ 50 horas =~ 2 dias
+- Tempo de leitura de 7.800.000 trilhas: 22,7 \* 7.800.000 = 177.060.000 ms =~ 50 horas =~ 2 dias
 
-3) ótima / paralelo ?
+3. ótima / paralelo ?
 
 - Salvo de forma ótima, porém com acesso paralelo
 
@@ -87,7 +89,7 @@ Conceitos
 
 ### Processamento de requisição
 
-``` plsql
+```plsql
 SE (EXISTE slot com a página solicitada?)
   INCREMENTA pin_count;
   RETORNA endereço do slot;
@@ -127,7 +129,7 @@ Como escolher slots com pin_count == 0 (?)
 - Escolha depende do padrão de uso
 - Repetidas varreduras sequenciais favorecem MRU, exemplo
 
-``` plsql
+```plsql
 JUNÇÃOs.k=r.k (R, S) : Algoritmo de Laços Aninhados Paginado
 PARA CADA pr em R
   PARA CADA ps em S
